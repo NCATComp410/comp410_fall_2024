@@ -1,5 +1,6 @@
 """PII Scan"""
 import spacy
+import logging
 from presidio_analyzer import AnalyzerEngine, RecognizerRegistry
 from presidio_analyzer.predefined_recognizers import (ItDriverLicenseRecognizer,
                                                       ItVatCodeRecognizer,
@@ -22,6 +23,13 @@ except OSError:
     download("en_core_web_lg")
     nlp = spacy.load("en_core_web_lg")
 
+# Configure logging to DEBUG level when needed
+# logging.basicConfig(level=logging.DEBUG)
+# Configure logging to INFO level when needed
+# logging.basicConfig(level=logging.INFO)
+# By default only critical logs will be printed
+logging.basicConfig(level=logging.CRITICAL)
+
 # Create an analyzer object
 registry = RecognizerRegistry()
 registry.load_predefined_recognizers()
@@ -36,7 +44,9 @@ registry.add_recognizer(EsNifRecognizer(supported_language='en'))
 registry.add_recognizer(PlPeselRecognizer(supported_language='en'))
 registry.add_recognizer(FiPersonalIdentityCodeRecognizer(supported_language='en'))
 
-analyzer = AnalyzerEngine(registry=registry)
+# Create an analyzer object
+# log_decision_process=True will log the decision process for debugging
+analyzer = AnalyzerEngine(registry=registry, log_decision_process=False)
 anonymizer = AnonymizerEngine()
 
 
@@ -73,7 +83,7 @@ def anonymize_file(file_path: str) -> None:
             print(anonymize_text(line, []))
 
 
-def analyze_text(text: str, entity_list: list) -> list:
+def analyze_text(text: str, entity_list: list, ) -> list:
     """
     Analyze the text using the entity list
     :param text: the text to be analyzed
@@ -83,7 +93,8 @@ def analyze_text(text: str, entity_list: list) -> list:
     # Call analyzer to get results
     results = analyzer.analyze(text=text,
                                entities=entity_list,
-                               language='en')
+                               language='en',
+                               return_decision_process=True)  # return decision process details
 
     return results
 

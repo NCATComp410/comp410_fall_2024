@@ -1,10 +1,10 @@
-"""Unit test file for Team Teamnew_orleans_fc"""
+"""Unit test file for team new_orleans_fc"""
 import unittest
-from pii_scan import analyze_text, show_aggie_pride
+from pii_scan import analyze_text, show_aggie_pride  # noqa 
 
 
-class TestTeamnew_orleans_fc(unittest.TestCase):
-    """Test the Team Teamnew_orleans_fc PII functions"""
+class TestTeam_new_orleans_fc(unittest.TestCase):
+    """Test team new_orleans_fc PII functions"""
     def test_show_aggie_pride(self):
         """Test to make sure Aggie Pride is shown correctly"""
         self.assertEqual(show_aggie_pride(), "Aggie Pride - Worldwide")
@@ -23,3 +23,7 @@ class TestTeamnew_orleans_fc(unittest.TestCase):
 
     def test_medical_license(self):
         """Test MEDICAL_LICENSE functionality"""
+
+
+if __name__ == '__main__':
+    unittest.main()

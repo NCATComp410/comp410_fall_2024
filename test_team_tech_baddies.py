@@ -1,10 +1,10 @@
-"""Unit test file for Team Teamtech_baddies"""
+"""Unit test file for team tech_baddies"""
 import unittest
-from pii_scan import analyze_text, show_aggie_pride
+from pii_scan import analyze_text, show_aggie_pride  # noqa 
 
 
-class TestTeamtech_baddies(unittest.TestCase):
-    """Test the Team Teamtech_baddies PII functions"""
+class TestTeam_tech_baddies(unittest.TestCase):
+    """Test team tech_baddies PII functions"""
     def test_show_aggie_pride(self):
         """Test to make sure Aggie Pride is shown correctly"""
         self.assertEqual(show_aggie_pride(), "Aggie Pride - Worldwide")
@@ -23,3 +23,7 @@ class TestTeamtech_baddies(unittest.TestCase):
 
     def test_in_voter(self):
         """Test IN_VOTER functionality"""
+
+
+if __name__ == '__main__':
+    unittest.main()

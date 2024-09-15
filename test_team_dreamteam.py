@@ -1,10 +1,10 @@
-"""Unit test file for Team Teamdreamteam"""
+"""Unit test file for team dreamteam"""
 import unittest
-from pii_scan import analyze_text, show_aggie_pride
+from pii_scan import analyze_text, show_aggie_pride  # noqa 
 
 
-class TestTeamdreamteam(unittest.TestCase):
-    """Test the Team Teamdreamteam PII functions"""
+class TestTeam_dreamteam(unittest.TestCase):
+    """Test team dreamteam PII functions"""
     def test_show_aggie_pride(self):
         """Test to make sure Aggie Pride is shown correctly"""
         self.assertEqual(show_aggie_pride(), "Aggie Pride - Worldwide")
@@ -23,3 +23,7 @@ class TestTeamdreamteam(unittest.TestCase):
 
     def test_au_tfn(self):
         """Test AU_TFN functionality"""
+
+
+if __name__ == '__main__':
+    unittest.main()
