@@ -17,6 +17,27 @@ class TestTeam_tech_baddies(unittest.TestCase):
 
     def test_in_passport(self):
         """Test IN_PASSPORT functionality"""
+        # postive test cases
+        alpha, numeric = ['A','Z'], ['12345678','87654321']
+        for letter in alpha:
+            for num in numeric:
+                passport = ''.join([letter,num])
+
+                # check with context
+                result = analyze_text('My passport number is ' + passport,['IN_PASSPORT'])
+                print(result)
+                self.assertEqual('IN_PASSPORT', result[0].entity_type)
+                self.assertEqual(0.44999999999999996, result[0].score)
+
+                # check with no context
+                result = analyze_text('My info is ' + passport,['IN_PASSPORT'])
+                self.assertEqual('IN_PASSPORT', result[0].entity_type)
+                self.assertEqual(0.1, result[0].score)
+
+        # negative test case - no result found
+        result = analyze_text('My passport number is A00000000',['IN_PASSPORT'])
+        self.assertListEqual([], result)
+
 
     def test_in_vehicle_registration(self):
         """Test IN_VEHICLE_REGISTRATION functionality"""
