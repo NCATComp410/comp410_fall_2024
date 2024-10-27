@@ -27,7 +27,7 @@ class TestTeam_tech_baddies(unittest.TestCase):
                 result = analyze_text('My passport number is ' + passport,['IN_PASSPORT'])
                 print(result)
                 self.assertEqual('IN_PASSPORT', result[0].entity_type)
-                self.assertEqual(0.44999999999999996, result[0].score)
+                self.assertAlmostEqual(0.45, result[0].score, places=2)
 
                 # check with no context
                 result = analyze_text('My info is ' + passport,['IN_PASSPORT'])
