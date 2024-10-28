@@ -23,6 +23,14 @@ class TestTeam_techtitans(unittest.TestCase):
 
     def test_us_passport(self):
         """Test US_PASSPORT functionality"""
+        prefix = ['123', '456']
+        mid = ['12']
+        suffix = ['1234']
+
+        result = analyze_text('My passport is 123456789', ['US_PASSPORT'])
+        print(result)
+        self.assertEqual('US_PASSPORT', result[0].entity_type)
+        self.assertEqual(0.4, result[0].score)
 
 
 if __name__ == '__main__':
