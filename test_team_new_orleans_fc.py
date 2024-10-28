@@ -53,7 +53,7 @@ class TestTeam_new_orleans_fc(unittest.TestCase):
                 # result will return [] if no results are found.
                 # In Python, None, [], or '', etc are equivalent to False
                 # assertFalse will catch if result is a falsy value (ex: [])
-                self.assertFalse(result, "Analyzer detected no credit card when it should've")
+                self.assertFalse(result, "Analyzer detected credit card when it should not have")
 
 
     def test_crypto(self):
