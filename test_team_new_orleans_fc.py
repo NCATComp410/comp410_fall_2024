@@ -83,7 +83,7 @@ class TestTeam_new_orleans_fc(unittest.TestCase):
         # Non-date/time examples to ensure they are not detected as DATE_TIME
         test_cases = {
             "Phone number": "336-291-1191",
-            "Credit card": "9192 8280 2102 5832",
+            "Credit card": "4001 9192 5753 7193",
             "Alphanumeric code": "ABC123XYZ",
         }
         for test_description, test_input in test_cases.items():
