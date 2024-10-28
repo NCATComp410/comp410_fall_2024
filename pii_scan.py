@@ -1,7 +1,7 @@
 """PII Scan"""
 import spacy
 import logging
-from presidio_analyzer import AnalyzerEngine, RecognizerRegistry
+from presidio_analyzer import AnalyzerEngine, RecognizerRegistry, RecognizerResult
 from presidio_analyzer.predefined_recognizers import (ItDriverLicenseRecognizer,
                                                       ItVatCodeRecognizer,
                                                       ItFiscalCodeRecognizer,
@@ -83,7 +83,7 @@ def anonymize_file(file_path: str) -> None:
             print(anonymize_text(line, []))
 
 
-def analyze_text(text: str, entity_list: list, ) -> list:
+def analyze_text(text: str, entity_list: list, ) -> list[RecognizerResult]:
     """
     Analyze the text using the entity list
     :param text: the text to be analyzed
