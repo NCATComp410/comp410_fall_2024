@@ -59,8 +59,39 @@ class TestTeam_new_orleans_fc(unittest.TestCase):
     def test_crypto(self):
         """Test CRYPTO functionality"""
 
-    def test_date_time(self):
-        """Test DATE_TIME functionality"""
+    def test_date_time_positives(self):
+        """Tests that date/time strings are being detected as a DATE_TIME type"""
+
+        # Example date/time formats to test
+        test_cases = {
+            "ISO format": "2023-10-28T15:45:00",
+            "Date with slashes": "10/28/2023",
+            "Date with dashes": "2023-10-28",
+            "Short date format": "10/28/23",
+        }
+        for test_description, test_input in test_cases.items():
+            with self.subTest(msg=test_description, test_input=test_input):
+                # Analyze DATE_TIME entities only with test_input.
+                result = analyze_text(test_input, entity_list=["DATE_TIME"])
+                # Check that a DATE_TIME entity was detected.
+                self.assertTrue(result, "Analyzer detected no date/time when it should've")
+                self.assertEqual("DATE_TIME", result[0].entity_type)
+
+
+    def test_date_time_negatives(self):
+        """Tests that non-date/time strings are not detected as DATE_TIME type"""
+        # Non-date/time examples to ensure they are not detected as DATE_TIME
+        test_cases = {
+            "Phone number": "336-291-1191",
+            "Credit card": "4001 9192 5753 7193",
+            "Alphanumeric code": "ABC123XYZ",
+        }
+        for test_description, test_input in test_cases.items():
+            with self.subTest(msg=test_description, test_input=test_input):
+                # Analyze DATE_TIME entities only with our test_input.
+                result = analyze_text(test_input, entity_list=["DATE_TIME"])
+                # Check that no DATE_TIME entity was detected.
+                self.assertFalse(result, "Analyzer detected date/time when it should not have")
 
     def test_email_address(self):
         """Test EMAIL_ADDRESS functionality"""
