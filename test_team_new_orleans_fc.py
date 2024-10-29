@@ -18,7 +18,6 @@ class TestTeam_new_orleans_fc(unittest.TestCase):
     def test_date_time(self):
         """Test DATE_TIME functionality"""
 
-    def test_email_address(self):
         """Test EMAIL_ADDRESS functionality"""
     def test_email_address_positives(self):
         test_cases = {
