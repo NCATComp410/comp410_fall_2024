@@ -34,11 +34,10 @@ class TestTeam_techtitans(unittest.TestCase):
             self.assertEqual("US_PASSPORT", result[0].entity_type)
             self.assertEqual(0.1, result[0].score)  # Expected next-gen weak match score
 
-        # Negative test case ]
+        # Negative test case
         result = analyze_text("My abc is 14019033", ["US_PASSPORT"])
         print("Result for 'My abc is 14019033':", result)
 
-        # Expecting no results for irrelevant context
         self.assertFalse(result, "Expected no result for irrelevant context")
 
 
