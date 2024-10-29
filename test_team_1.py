@@ -1,6 +1,6 @@
 """Unit test file for team 1"""
 import unittest
-from pii_scan import analyze_text, show_aggie_pride  # noqa 
+from pii_scan import analyze_text, show_aggie_pride  # noqa
 
 
 class TestTeam_1(unittest.TestCase):
@@ -17,6 +17,10 @@ class TestTeam_1(unittest.TestCase):
 
     def test_fi_personal_identity_code(self):
         """Test FI_PERSONAL_IDENTITY_CODE functionality"""
+        #birthdays, centuryMarker, genderMarkers = ['190704', '260923', '051070'], ['A', 'Y'], ['293', '522', '435', '754']
+        result = analyze_text('hetu 190704A293B', ['FI_PERSONAL_IDENTITY_CODE'])
+        print(result) #result is only []
+        self.assertEqual('FI_PERSONAL_IDENTITY_CODE', result)
 
     def test_iban_code(self):
         """Test IBAN_CODE functionality"""
