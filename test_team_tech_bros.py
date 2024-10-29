@@ -1,5 +1,4 @@
 """Unit test file for team tech_bros"""
-import re
 import unittest
 from pii_scan import analyze_text, show_aggie_pride  # noqa 
 
