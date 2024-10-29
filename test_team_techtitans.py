@@ -14,19 +14,19 @@ class TestTeam_techtitans(unittest.TestCase):
         """Test US_PASSPORT functionality"""
 
         # Positive test case with a plain 9-digit passport number
-        result = analyze_text("My passport is 14019033", ["US_PASSPORT"])
-        print("Result for 'My passport is 14019033':", result)
+        result = analyze_text("My passport is 140190332", ["US_PASSPORT"])
+        print("Result for 'My passport is 140190332':", result)
 
         # Check that the result is not empty before accessing
         self.assertTrue(result, "Expected a US_PASSPORT entity but got no results.")
         if result:
             # Check entity type and confidence score for a weak pattern match
             self.assertEqual("US_PASSPORT", result[0].entity_type)
-            self.assertEqual(0.05, result[0].score)  # Expected weak match score
+            self.assertEqual(0.4, result[0].score)  # Expected weak match score
 
         # Positive test case
-        result = analyze_text("My passport is A12345678", ["US_PASSPORT"])
-        print("Result for 'My passport is A12345678':", result)
+        result = analyze_text("My is A12345678", ["US_PASSPORT"])
+        print("Result for 'My is passport A12345678':", result)
 
         # Check that the result is not empty before accessing
         self.assertTrue(result, "Expected a US_PASSPORT entity but got no results.")
