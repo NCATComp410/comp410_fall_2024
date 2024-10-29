@@ -55,9 +55,38 @@ class TestTeam_new_orleans_fc(unittest.TestCase):
                 # assertFalse will catch if result is a falsy value (ex: [])
                 self.assertFalse(result, "Analyzer detected credit card when it should not have")
 
+    def test_crypto_positives(self):
+        """Tests that valid Bitcoin addresses are being detected as a CRYPTO type"""
+        # test addresses from https://bitcoin.design/guide/glossary/address/
+        # Bitcoin addresses follow a certain pattern, even aside from their first character
+        test_cases = {
+            "P2TR (Taproot)": "bc1p5d7rjq7g6rdk2yhzks9smlaqtedr4dekq08ge8ztwac72sfr9rusxg3297",
+            "P2WPKH (SegWit)": "bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq",
+            "P2SH (Script)": "3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy",
+            "P2PKH (Legacy)": "1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2"
+        }
 
-    def test_crypto(self):
-        """Test CRYPTO functionality"""
+        for test_description, test_input in test_cases.items():
+            with self.subTest(msg=test_description, test_input = test_input):
+                result = analyze_text(test_input, entity_list=["CRYPTO"])
+                self.assertTrue(result, "Analyzer detected no CRYPTO when it should've")
+                self.assertEqual("CRYPTO", result[0].entity_type)
+
+    def test_crypto_negatives(self):
+        """Tests that invalid Bitcoin addresses are not detected as a CRYPTO type"""
+        # some values borrowed from credit card and date time tests.
+        test_cases = {
+            "35 Zeroes": "00000000000000000000000000000000000",
+            "27 A's": "AAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "Visa Credit Card Number": "4001919257537193",
+            "ISO Formatted Date": "2023-10-28T15:45:00",
+        }
+
+        for test_description, test_input in test_cases.items():
+            with self.subTest(msg=test_description, test_input = test_input):
+                result = analyze_text(test_input, entity_list=["CRYPTO"])
+                self.assertFalse(result,
+                                 "Analyzer detected Bitcoin address on non-Bitcoin address value.")
 
     def test_date_time_positives(self):
         """Tests that date/time strings are being detected as a DATE_TIME type"""
