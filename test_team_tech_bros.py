@@ -21,9 +21,6 @@ class TestTeam_tech_bros(unittest.TestCase):
 
     def test_it_passport(self):
         """Test IT_PASSPORT functionality"""
-        # Define the regex pattern for an IT_PASSPORT
-        passport_pattern = r"^[A-Za-z0-9]{2}[0-9]{7}$"
-        
         # Valid examples
         valid_passports = ["JF3349917", "AB1234567", "ea1213002"]
         
@@ -33,12 +30,17 @@ class TestTeam_tech_bros(unittest.TestCase):
         # Test valid passports
         for passport in valid_passports:
             with self.subTest(passport=passport):
-                self.assertTrue(re.match(passport_pattern, passport), f"{passport} should be valid")
+                # Use Italian for passport to increase the score
+                result = analyze_text(f"My passaporto number is {passport}", ['IT_PASSPORT'])
+                print(result)
+                self.assertEqual('IT_PASSPORT', result[0].entity_type)
+                self.assertAlmostEqual(0.4, result[0].score, places=2)
 
         # Test invalid passports
         for passport in invalid_passports:
             with self.subTest(passport=passport):
-                self.assertFalse(re.match(passport_pattern, passport), f"{passport} should be invalid")
+                result = analyze_text(f"My passaporto number is {passport}", ['IT_PASSPORT'])
+                self.assertListEqual([], result)
 
     def test_it_vat_code(self):
         """Test IT_VAT_CODE functionality"""
