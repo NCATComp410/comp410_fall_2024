@@ -11,7 +11,7 @@ class TestTeam_tech_baddies(unittest.TestCase):
 
     def test_in_aadhaar(self):
         """Test IN_AADHAAR functionality"""
-
+        
     def test_in_pan(self):
         """Test IN_PAN functionality"""
         #Positive test cases
@@ -34,7 +34,7 @@ class TestTeam_tech_baddies(unittest.TestCase):
         
 
         
-
+ 
     def test_in_passport(self):
         """Test IN_PASSPORT functionality"""
         # postive test cases
@@ -64,6 +64,26 @@ class TestTeam_tech_baddies(unittest.TestCase):
 
     def test_in_voter(self):
         """Test IN_VOTER functionality"""
+        # Positive test case with context
+        voters = ['AaB1234567','CkM9876543','HgN7654321']
+        for voter in voters:
+            result = analyze_text('My voter resgistration number is '+voter,['IN_VOTER'])
+            print(result)
+            self.assertEqual('IN_VOTER',result[0].entity_type)
+            self.assertEqual(0.75,result[0].score)
+
+        # Positive test case with no context
+        result = analyze_text('My voter resgistration number is xyz9876543',['IN_VOTER'])
+        print(result)
+        self.assertEqual('IN_VOTER',result[0].entity_type)
+        self.assertEqual(0.75,result[0].score)
+
+        #negative test case
+        result = analyze_text('My voter resgistration number is ABCD1234567',['IN_VOTER'])
+        print(result)
+        self.assertListEqual([],result)
+
+        
 
 
 if __name__ == '__main__':
