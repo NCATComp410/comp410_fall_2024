@@ -1,6 +1,7 @@
 """Unit test file for team new_orleans_fc"""
 import unittest
-from pii_scan import analyze_text, show_aggie_pride  # noqa 
+# Assuming the recognizer is in the correct relative path as a module
+from pii_scan import analyze_text, show_aggie_pride  # noqa
 
 
 class TestTeam_new_orleans_fc(unittest.TestCase):
@@ -156,7 +157,32 @@ class TestTeam_new_orleans_fc(unittest.TestCase):
 
     def test_medical_license(self):
         """Test MEDICAL_LICENSE functionality"""
+        prefix = ['T9','Ca']
+        mid = ['4327']
+        suffix = ['537']
 
+        # positive test cases
+        for p in prefix:
+            for m in mid:
+                for s in suffix:
+                    mln = ''.join([p,m,s])
+                    # check no context score should be 0.4
+                    result = analyze_text('' + mln, ['MEDICAL_LICENSE'])
+                    print(result)
+                    self.assertEqual('MEDICAL_LICENSE', result[0].entity_type)
+                    self.assertEqual(1.0, result[0].score)
+                    # check context should be 1.0
+                    result = analyze_text('My DEA Certificate number is ' + mln, ['MEDICAL_LICENSE'])
+                    self.assertEqual('MEDICAL_LICENSE', result[0].entity_type)
+                    self.assertEqual(1.0, result[0].score)
+
+        # negative test cases
+
+        result = analyze_text("My USA DEA Certificate Number number is Tx432757",['MEDICAL_LICENSE'])
+        self.assertListEqual([],result)
+        #print(result)
+        #self.assertEqual('MEDICAL_LICENSE', result[0].entity_type)
+        #self.assertEqual(1.0, result[0].score)
 
 if __name__ == '__main__':
     unittest.main()
