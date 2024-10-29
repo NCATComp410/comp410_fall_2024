@@ -6,7 +6,7 @@
 	"image": "mcr.microsoft.com/devcontainers/python:0-3.11",
 	"features": {
 		"ghcr.io/devcontainers-contrib/features/coverage-py:2": {}
-	}
+	},
 
 	// presidio requires 8gb of ram
 	"hostRequirements": {
