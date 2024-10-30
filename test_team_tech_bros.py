@@ -51,6 +51,15 @@ class TestTeam_tech_bros(unittest.TestCase):
         #Step 7: Check the results
         self.assertTrue(any(result.entity_type == entity_type for result in results), "Italian ID Card was not detected")
 
+        #Negative Test Case
+        sample_text = "Mario Rossi, Codice Fiscale: CF1234A567B, issued in Rome"
+        results = analyzer.analyze(
+            text=sample_text,
+            entities=[entity_type],
+            language="en"
+        )
+        self.assertFalse(any(result.entity_type == entity_type for result in results), "Italian ID Card was incorrectly detected")
+
 
     def test_it_passport(self):
         """Test IT_PASSPORT functionality"""
