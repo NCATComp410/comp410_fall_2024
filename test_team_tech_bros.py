@@ -11,6 +11,26 @@ class TestTeam_tech_bros(unittest.TestCase):
 
     def test_it_driver_license(self):
         """Test IT_DRIVER_LICENSE functionality"""
+        #testing with context
+        dln = 'SS5196744P'
+        result = analyze_text('Il mio numero di patente di guida è ' + dln, ['IT_DRIVER_LICENSE'])
+        print(result)
+        self.assertEqual('IT_DRIVER_LICENSE', result[0].entity_type)
+        self.assertEqual(0.55, result[0].score)
+
+        #testing without context
+        result = analyze_text('Il mio numero è ' + dln, ['IT_DRIVER_LICENSE'])
+        print(result)
+        self.assertIn('IT_DRIVER_LICENSE', result[0].entity_type)
+        self.assertEqual(0.2, result[0].score)
+
+        #negative test case
+        invalid_dln = 'SS238FN'
+        result = analyze_text('Il mio numero di patente di guida è ' + invalid_dln, ['IT_DRIVER_LICENSE'])
+        print(result)
+        self.assertListEqual([], result)
+
+        
 
     def test_it_fiscal_code(self):
         """Test IT_FISCAL_CODE functionality"""
