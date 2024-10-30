@@ -2,7 +2,7 @@
 import unittest
 import re
 from pii_scan import analyze_text, show_aggie_pride  # noqa 
-from presidio_analyzer import AnalyzerEngine, PatternRecognizer, RecognizerRegistry, Pattern
+from presidio_analyzer import PatternRecognizer, RecognizerRegistry, Pattern
 
 
 
@@ -32,9 +32,6 @@ class TestTeam_tech_bros(unittest.TestCase):
         registry = RecognizerRegistry()
         registry.add_recognizer(italian_id_recognizer)
 
-         # Step 3: Initialize Presidio Analyzer with the custom registry
-        analyzer = AnalyzerEngine(registry=registry)
-
         #Step 4: Sample Text resembling Italian ID Information
         sample_text = "Mario Rossi, Carta d'identità: AY1234567, issued in Rome"
 
@@ -42,22 +39,14 @@ class TestTeam_tech_bros(unittest.TestCase):
         entity_type = "IT_IDENTITY_CARD"
 
         #Step 6: Run the analysis
-        results = analyzer.analyze(
-            text=sample_text,
-            entities=[entity_type],
-            language="en"
-        )
+        results = analyze_text(sample_text, [entity_type])
 
         #Step 7: Check the results
         self.assertTrue(any(result.entity_type == entity_type for result in results), "Italian ID Card was not detected")
 
         #Negative Test Case
         sample_text = "Mario Rossi, Codice Fiscale: CF1234A567B, issued in Rome"
-        results = analyzer.analyze(
-            text=sample_text,
-            entities=[entity_type],
-            language="en"
-        )
+        results = analyze_text(sample_text, [entity_type])
         self.assertFalse(any(result.entity_type == entity_type for result in results), "Italian ID Card was incorrectly detected")
 
 
