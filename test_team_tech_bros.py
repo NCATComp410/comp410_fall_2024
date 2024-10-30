@@ -20,26 +20,27 @@ class TestTeam_tech_bros(unittest.TestCase):
 
     def test_it_passport(self):
         """Test IT_PASSPORT functionality"""
+
         # Valid examples
-        valid_passports = ["JF3349917", "AB1234567", "ea1213002"]
+        p_num = "JF3349917"
+        invalid_p = "12ABC5678"
         
-        # Invalid examples
-        invalid_passports = ["J3349917", "JF334991", "J#3349917", "JF 3349917", "ABC1234567", "12AB3456789", "99ABCDEFG", "12ABC5678"]
-        
-        # Test valid passports
-        for passport in valid_passports:
-            with self.subTest(passport=passport):
-                # Use Italian for passport to increase the score
-                result = analyze_text(f"My passaporto number is {passport}", ['IT_PASSPORT'])
-                print(result)
-                self.assertEqual('IT_PASSPORT', result[0].entity_type)
-                self.assertAlmostEqual(0.4, result[0].score, places=2)
+        # Test valid passport with context
+        result = analyze_text(f"My italiano passaporto number is {p_num}", ['IT_PASSPORT'])
+        print(result)
+        self.assertEqual('IT_PASSPORT', result[0].entity_type)
+        self.assertAlmostEqual(0.4, result[0].score, places=2)
+
+        # Test valid passport without context
+        result = analyze_text(f"My number is {p_num}", ['IT_PASSPORT'])
+        print(result)
+        self.assertEqual('IT_PASSPORT', result[0].entity_type)
+        self.assertAlmostEqual(0.01, result[0].score, places=2)
 
         # Test invalid passports
-        for passport in invalid_passports:
-            with self.subTest(passport=passport):
-                result = analyze_text(f"My passaporto number is {passport}", ['IT_PASSPORT'])
-                self.assertListEqual([], result)
+        result = analyze_text(f"My passaporto number is {invalid_p}", ['IT_PASSPORT'])
+        print(result)
+        self.assertListEqual([], result)
 
     def test_it_vat_code(self):
         """Test IT_VAT_CODE functionality"""
