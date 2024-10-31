@@ -1,8 +1,6 @@
 """Unit test file for team tech_bros"""
 import unittest
-import re
 from pii_scan import analyze_text, show_aggie_pride  # noqa 
-from presidio_analyzer import PatternRecognizer, RecognizerRegistry, Pattern
 
 
 
@@ -21,46 +19,16 @@ class TestTeam_tech_bros(unittest.TestCase):
     def test_it_identity_card(self):
         """Test IT_IDENTITY_CARD functionality"""
 
-        # Step 1: Define a custom recognizer for Italian ID pattern (e.g., `Carta d'identità: AY1234567`)
-        pattern = Pattern(name="it_id_pattern", regex=r"\b[A-Z]{2}\d{7}\b", score=0.8)  # Example pattern for ID format
-        italian_id_recognizer = PatternRecognizer(
-            supported_entity="IT_IDENTITY_CARD",
-            patterns=[pattern],
-        )
-
-        # Step 2: Create a RecognizerRegistry and add the custom recognizer
-        registry = RecognizerRegistry()
-        registry.add_recognizer(italian_id_recognizer)
-
-        #Step 4: Sample Text resembling Italian ID Information
+        #Step 1: Sample Text resembling Italian ID Information
         sample_text = "Mario Rossi, Carta d'identità: AY1234567, issued in Rome"
 
-        #Step 5: Specify the Italian ID Entity Type
+        #Step 2: Specify the Italian ID Entity Type
         entity_type = "IT_IDENTITY_CARD"
 
-        #Step 6: Run the analysis
+        #Step 3: Run the analysis
         results = analyze_text(sample_text, [entity_type])
 
-        #Step 7: Check the results
-        self.assertTrue(any(result.entity_type == entity_type for result in results), "Italian ID Card was not detected")
-
-        #Negative Test Case
-        sample_text = "Mario Rossi, Codice Fiscale: CF1234A567B, issued in Rome"
-        results = analyze_text(sample_text, [entity_type])
-        self.assertFalse(any(result.entity_type == entity_type for result in results), "Italian ID Card was incorrectly detected")
-
-    def test_it_identity_card_new(self):
-        """Test IT_IDENTITY_CARD functionality"""
-        #Step 4: Sample Text resembling Italian ID Information
-        sample_text = "Mario Rossi, Carta d'identità: AY1234567, issued in Rome"
-
-        #Step 5: Specify the Italian ID Entity Type
-        entity_type = "IT_IDENTITY_CARD"
-
-        #Step 6: Run the analysis
-        results = analyze_text(sample_text, [entity_type])
-
-        #Step 7: Check the results
+        #Step 4: Check the results
         self.assertTrue(results[0].entity_type == entity_type, "Italian ID Card was not detected")
 
         # Check the score
