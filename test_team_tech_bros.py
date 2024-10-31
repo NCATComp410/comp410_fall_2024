@@ -11,9 +11,19 @@ class TestTeam_tech_bros(unittest.TestCase):
 
     def test_it_driver_license(self):
         """Test IT_DRIVER_LICENSE functionality"""
+        # Testing with context and valid fiscal code
+        fiscal_code = 'RSSMRA85M01H501Z'  # Example of a valid Italian Fiscal Code
+        result = analyze_text('Il mio codice fiscale è ' + fiscal_code, ['IT_FISCAL_CODE'])
+        print(result)
+        self.assertEqual('IT_FISCAL_CODE', result[0].entity_type)
+        self.assertEqual(0.80, result[0].score)  # Adjust score as expected based on analyze_text behavior
 
-    def test_it_fiscal_code(self):
-        """Test IT_FISCAL_CODE functionality"""
+        # Testing without context and an invalid fiscal code
+        invalid_fiscal_code = '1234XYZ'
+        result = analyze_text('Il mio codice è ' + invalid_fiscal_code, ['IT_FISCAL_CODE'])
+        print(result)
+        self.assertListEqual([], result)  # Expect no entities detected due to invalid format
+
 
     def test_it_identity_card(self):
         """Test IT_IDENTITY_CARD functionality"""
