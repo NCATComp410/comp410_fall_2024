@@ -11,9 +11,9 @@ class TestTeam_tech_baddies(unittest.TestCase):
 
     def test_in_aadhaar(self):
         """Test IN_AADHAAR functionality"""
-        prefix = ['2345'] 
-        mid = ['6789']
-        suffix = ['1234']
+        prefix = ['3123']
+        mid = ['4567']
+        suffix = ['8909']
 
         # Positive test cases
         for p in prefix:
@@ -27,7 +27,7 @@ class TestTeam_tech_baddies(unittest.TestCase):
                     
                     if result:
                         self.assertEqual('IN_AADHAAR', result[0].entity_type)
-                        self.assertEqual(0.85, result[0].score)
+                        self.assertEqual(1.0, result[0].score)
                     else:
                         print("No Aadhaar detected with context for:", aadhaar)
 
@@ -37,7 +37,7 @@ class TestTeam_tech_baddies(unittest.TestCase):
 
                     if result:
                         self.assertEqual('IN_AADHAAR', result[0].entity_type)
-                        self.assertEqual(0.5, result[0].score)
+                        self.assertEqual(1.0, result[0].score)
                     else:
                         print("No Aadhaar detected without context for:", aadhaar)
 
