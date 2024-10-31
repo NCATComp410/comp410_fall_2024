@@ -70,15 +70,15 @@ class TestTeam_tech_baddies(unittest.TestCase):
         # Positive Test Case
         for b in begin:
             for e in ending:
-                voter = ''.join([b,e])
+                number = ''.join([b,e])
                 # Check context score should be 0.75
-                result = analyze_text('My Voter ID is ' + voter, ['IN_VOTER'])
+                result = analyze_text('My Voter ID is ' + number, ['IN_VOTER'])
                 print(result)
                 self.assertEqual('IN_VOTER', result[0].entity_type)
                 self.assertEqual(0.75, result[0].score)
 
                 # Check no context
-                result = analyze_text('My voter is ' + voter, ['IN_VOTER'])
+                result = analyze_text('My voter is ' + number, ['IN_VOTER'])
                 self.assertEqual('IN_VOTER', result[0].entity_type)
                 self.assertEqual(0.75, result[0].score)
 
