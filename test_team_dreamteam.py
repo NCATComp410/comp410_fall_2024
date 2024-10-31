@@ -38,9 +38,18 @@ class TestTeam_dreamteam(unittest.TestCase):
 
     def test_au_medicare(self):
         """Test AU_MEDICARE functionality"""
+        #Positive test case
+        result = analyze_text('My medicare number is 3854 72631 5', ['AU_MEDICARE'])
+        print(result)
+        
+        #Negative test case
+        invalid_result = analyze_text("My AU medical number is 1H34 56789 1", ['AU_MEDICARE'])
+        print(invalid_result)
+        self.assertEqual([], invalid_result)
 
     def test_au_tfn(self):
         """Test AU_TFN functionality"""
+    
 
 
 if __name__ == '__main__':
