@@ -10,7 +10,8 @@ from presidio_analyzer.predefined_recognizers import (ItDriverLicenseRecognizer,
                                                       EsNieRecognizer,
                                                       EsNifRecognizer,
                                                       PlPeselRecognizer,
-                                                      FiPersonalIdentityCodeRecognizer)
+                                                      FiPersonalIdentityCodeRecognizer,
+                                                      AuAbnRecognizer)
 from presidio_anonymizer import AnonymizerEngine
 
 # make sure en_core_web_lg is loaded correctly
@@ -43,6 +44,7 @@ registry.add_recognizer(EsNieRecognizer(supported_language='en'))
 registry.add_recognizer(EsNifRecognizer(supported_language='en'))
 registry.add_recognizer(PlPeselRecognizer(supported_language='en'))
 registry.add_recognizer(FiPersonalIdentityCodeRecognizer(supported_language='en'))
+registry.add_recognizer(AuAbnRecognizer(supported_language='en'))
 
 # Create an analyzer object
 # log_decision_process=True will log the decision process for debugging
