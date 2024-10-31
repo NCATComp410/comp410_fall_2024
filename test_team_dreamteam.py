@@ -49,6 +49,14 @@ class TestTeam_dreamteam(unittest.TestCase):
 
     def test_au_tfn(self):
         """Test AU_TFN functionality"""
+        # Positive test case
+        result = analyze_text(' My TFN is 123 456 789', ['AU_TFN'])
+        print(result)
+
+        # Negative test case
+        result_invalid = analyze_text('My TFM is 4321 8765', ['AU_TFN'])
+        print(result_invalid)
+        self.assertEqual(result_invalid, [])
     
 
 
