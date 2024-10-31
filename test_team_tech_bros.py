@@ -43,6 +43,24 @@ class TestTeam_tech_bros(unittest.TestCase):
 
     def test_it_vat_code(self):
         """Test IT_VAT_CODE functionality"""
+        # testing with context
+        valid_vat = '74575451989'
+        result = analyze_text('Il mio numero di partita iva è ' + valid_vat, ['IT_VAT_CODE'])
+        print(result)
+        self.assertEqual('IT_VAT_CODE', result[0].entity_type)
+        self.assertEqual(1.0, result[0].score)
+
+        # testing without context
+        result = analyze_text('I miei valori sono ' + valid_vat, ['IT_VAT_CODE'])
+        print(result)
+        self.assertEqual('IT_VAT_CODE', result[0].entity_type)
+        self.assertEqual(1.0, result[0].score)
+
+        # negative test case
+        invalid_vat = '12348945'
+        result = analyze_text('Il mio numero di partita iva è ' + invalid_vat, ['IT_VAT_CODE'])
+        print(result)
+        self.assertListEqual([], result)
 
 
 if __name__ == '__main__':
