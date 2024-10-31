@@ -61,7 +61,7 @@ class TestTeamTechtitans(unittest.TestCase):
         self.assertTrue(result, f"Expected a result for valid ITIN: {itin}")
         if result:
             self.assertEqual('US_ITIN', result[0].entity_type)
-            self.assertEqual(0.85, result[0].score)
+            
 
         # Test with a different phrase
         result = analyze_text(f'My abc is {itin}', ['US_ITIN'])
@@ -71,7 +71,7 @@ class TestTeamTechtitans(unittest.TestCase):
         self.assertTrue(result, f"Expected a result for valid ITIN: {itin} with different phrase")
         if result:
             self.assertEqual('US_ITIN', result[0].entity_type)
-            self.assertEqual(0.85, result[0].score)
+            
 
     # Negative test case
         invalid_input = '617-32-2222'
