@@ -1,6 +1,6 @@
 """PII Scan"""
-import logging
 import spacy
+import logging
 from presidio_analyzer import AnalyzerEngine, RecognizerRegistry, RecognizerResult
 from presidio_analyzer.predefined_recognizers import (ItDriverLicenseRecognizer,
                                                       ItVatCodeRecognizer,
@@ -11,7 +11,8 @@ from presidio_analyzer.predefined_recognizers import (ItDriverLicenseRecognizer,
                                                       EsNifRecognizer,
                                                       PlPeselRecognizer,
                                                       FiPersonalIdentityCodeRecognizer,
-                                                      AuAcnRecognizer)
+                                                      AuAcnRecognizer,
+                                                      AuTfnRecognizer)
 from presidio_anonymizer import AnonymizerEngine
 
 # make sure en_core_web_lg is loaded correctly
@@ -45,6 +46,7 @@ registry.add_recognizer(EsNifRecognizer(supported_language='en'))
 registry.add_recognizer(PlPeselRecognizer(supported_language='en'))
 registry.add_recognizer(FiPersonalIdentityCodeRecognizer(supported_language='en'))
 registry.add_recognizer(AuAcnRecognizer(supported_language='en'))
+registry.add_recognizer(AuTfnRecognizer(supported_language='en'))
 
 # Create an analyzer object
 # log_decision_process=True will log the decision process for debugging
