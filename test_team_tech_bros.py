@@ -51,7 +51,7 @@ class TestTeam_tech_bros(unittest.TestCase):
         self.assertEqual(1.0, result[0].score)
 
         # testing without context
-        result = analyze_text('I miei valori sono ' + valid_vat, ['IT_VAT_CODE'])
+        result = analyze_text(valid_vat, ['IT_VAT_CODE'])
         print(result)
         self.assertEqual('IT_VAT_CODE', result[0].entity_type)
         self.assertEqual(1.0, result[0].score)
