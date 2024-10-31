@@ -1,7 +1,6 @@
 """Unit test file for team techtitans"""
 import unittest
 import sys
-from unittest.mock import patch
 from pii_scan import analyze_text, show_aggie_pride  # noqa 
 
 
@@ -40,33 +39,46 @@ class TestTeamTechtitans(unittest.TestCase):
     def test_us_itin(self):
         """Test US_ITIN functionality with various formats"""
 
-        # List of formats to test the ITIN recognition
-        itin_formats = [
-            "My ITIN is 123-45-6789",        # Standard format
-            "ITIN: 123456789",               # No dashes
-            "ITIN number 123-45-6789",       # Different phrase
-            "My taxpayer ID is 123-45-6789"  # Different keyword
-        ]
+        valid_itins = [
+           "900-70-1234",
+           "970-45-6789",
+           "999-97-1111"
+    ]
 
-        for itin_text in itin_formats:
-            print(f"Testing ITIN format: '{itin_text}'")
-            result = analyze_text(itin_text, ["US_ITIN"])
-            
-            # Print result to examine the response
-            print(f"Result for '{itin_text}': {result}")
-            
-            # Check if result is returned for this format
-            self.assertTrue(result, f"Expected a result for valid ITIN format: {itin_text}")
-            if result:
-                self.assertEqual("US_ITIN", result[0].entity_type)
-                self.assertEqual(0.85, result[0].score)
-        
-        # Negative test case
-        invalid_itin = "My ITIN is 671-11-1111"
-        result = analyze_text(invalid_itin, ["US_ITIN"])
-        print(f"Testing invalid ITIN: {invalid_itin} => Result: {result}")
+    # Positive test cases
+        for itin in valid_itins:
+            print(f"Testing valid ITIN format: '{itin}'")
+
+            # Test the valid ITIN format
+            result = analyze_text(f'My ITIN is {itin}', ['US_ITIN'])
+            print(f"Result for 'My ITIN is {itin}': {result}")
+
+               # Test the valid ITIN format
+        result = analyze_text(f'My ITIN is {itin}', ['US_ITIN'])
+        print(f"Result for 'My ITIN is {itin}': {result}")
+
+        # Ensure result is not empty before accessing
+        self.assertTrue(result, f"Expected a result for valid ITIN: {itin}")
+        if result:
+            self.assertEqual('US_ITIN', result[0].entity_type)
+            self.assertEqual(0.85, result[0].score)
+
+        # Test with a different phrase
+        result = analyze_text(f'My abc is {itin}', ['US_ITIN'])
+        print(f"Result for 'My abc is {itin}': {result}")
+
+        # Ensure result is not empty before accessing
+        self.assertTrue(result, f"Expected a result for valid ITIN: {itin} with different phrase")
+        if result:
+            self.assertEqual('US_ITIN', result[0].entity_type)
+            self.assertEqual(0.85, result[0].score)
+
+    # Negative test case
+        invalid_input = '617-32-2222'
+        result = analyze_text(invalid_input, ['US_ITIN'])
+        print(f"Result for invalid ITIN '{invalid_input}': {result}")
         self.assertListEqual([], result, "Expected no result for invalid ITIN format.")
-
+        
     def test_us_passport(self):
         """Test US_PASSPORT functionality"""
         # Placeholder for US_PASSPORT functionality test
