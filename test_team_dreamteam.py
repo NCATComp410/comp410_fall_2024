@@ -2,6 +2,7 @@
 import unittest
 from pii_scan import analyze_text, show_aggie_pride  # noqa
 
+
 class TestTeam_dreamteam(unittest.TestCase):
     """Test team dreamteam PII functions"""
     def test_show_aggie_pride(self):
