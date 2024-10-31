@@ -18,6 +18,14 @@ class TestTeam_techtitans(unittest.TestCase):
     def test_us_driver_license(self):
         """Test US_DRIVER_LICENSE functionality"""
 
+        # Positive test case with a plain 12-digit Drivers License number
+        result = analyze_text('My Drivers licnese is 950354535123', ['US_DRIVER_LICENSE'])
+        print(result)
+        # Check entity type and confidence score for a weak pattern match
+        self.assertEqual('US_DRIVER_LICENSE', result[0].entity_type)
+        self.assertEqual(0.4, result[0].score)
+
+
     def test_us_itin(self):
         """Test US_ITIN functionality"""
 
@@ -27,7 +35,7 @@ class TestTeam_techtitans(unittest.TestCase):
         # Positive test case with a plain 9-digit passport number
         result = analyze_text("My passport is 140190332", ["US_PASSPORT"])
         print("Result for 'My passport is 140190332':", result)
-
+  
         # Check that the result is not empty before accessing
         self.assertTrue(result, "Expected a US_PASSPORT entity but got no results.")
         if result:
