@@ -1,8 +1,5 @@
 """Unit test file for team tech_bros"""
 import unittest
-
-from numpy.lib.function_base import place
-
 from pii_scan import analyze_text, show_aggie_pride  # noqa
 
 
