@@ -41,6 +41,27 @@ class TestTeam_tech_bros(unittest.TestCase):
     def test_it_passport(self):
         """Test IT_PASSPORT functionality"""
 
+        # Valid examples
+        p_num = "JF3349917"
+        invalid_p = "12ABC5678"
+        
+        # Test valid passport with context
+        result = analyze_text(f"My italiano passaporto number is {p_num}", ['IT_PASSPORT'])
+        print(result)
+        self.assertEqual('IT_PASSPORT', result[0].entity_type)
+        self.assertAlmostEqual(0.4, result[0].score, places=2)
+
+        # Test valid passport without context
+        result = analyze_text(f"My number is {p_num}", ['IT_PASSPORT'])
+        print(result)
+        self.assertEqual('IT_PASSPORT', result[0].entity_type)
+        self.assertAlmostEqual(0.01, result[0].score, places=2)
+
+        # Test invalid passports
+        result = analyze_text(f"My passaporto number is {invalid_p}", ['IT_PASSPORT'])
+        print(result)
+        self.assertListEqual([], result)
+
     def test_it_vat_code(self):
         """Test IT_VAT_CODE functionality"""
         # testing with context
