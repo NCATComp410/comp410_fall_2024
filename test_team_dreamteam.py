@@ -35,29 +35,32 @@ class TestTeam_dreamteam(unittest.TestCase):
 
     def test_au_acn(self):
         """Test AU_ACN functionality"""
-        pre = ['123']
-        mid = ['456']
-        suf = ['785']
+        # 005 499 981
+        pre = ['005']
+        mid = ['499']
+        suf = ['981']
 
         # positive test cases
         for p in pre:
             for m in mid:
                 for s in suf:
                     # check context score
-                    acn = '-'.join([p,m,s])
-                    print(acn)
-                    result = analyze_text('My ACN is ' + acn, ['AU_ACN'])
+                    acn = ' '.join([p,m,s])
+                    text = 'My ACN is ' + acn
+                    print(text)
+                    result = analyze_text(text, ['AU_ACN'])
                     print(result)
-                    self.assertEqual('AU_ACN', result)
-                    self.assertEqual(0.1, result[0].score)
+                    self.assertEqual('AU_ACN', result[0].entity_type)
+                    self.assertEqual(1.0, result[0].score)
 
                     # checks no context
-                    result = analyze_text('My ACN is ' + acn, ['AU_ACN'])
-                    self.assertEqual('AU_ACN', result)
-                    self.assertEqual(0.01, result[0].score)
+                    result = analyze_text('My num is ' + acn, ['AU_ACN'])
+                    self.assertEqual('AU_ACN', result[0].entity_type)
+                    # Validation score is 1.0 even if there is no context for AU_ACN
+                    self.assertEqual(1.0, result[0].score)
 
         # negative test cases
-        result_invalid = analyze_text('My ACN is 123-456-789', ['AU-ACN'])
+        result_invalid = analyze_text('My ACN is 123-456-789', ['AU_ACN'])
         self.assertEqual([], result_invalid)
 
     def test_au_medicare(self):
