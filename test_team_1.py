@@ -90,14 +90,14 @@ class TestTeam_1(unittest.TestCase):
     def test_ip_address(self):
         """Test IP_ADDRESS functionality"""
         net1s = ['168', '192', '255'] #First part of the IP Address
-        net2 = ['243', '542', '495']  #Second part of the IP Address
+        net2 = ['243']  #Second part of the IP Address
         net3 = ['1']  #Third part of the IP Address
         hostID = ['1', '32', '170'] #Last part of IP and the host ID
         
         IP61 = ['2001:0db8:85a3:','09C0:876A:130B:'] #First part of the IP
         IP62 = ['8a2e:0370:7334','2001:0db8:85a3'] # Second part of the IP
         
-        IPAddres = []
+
         IP6 = []
         for n1 in net1s:
             for n2 in net2:
@@ -106,6 +106,8 @@ class TestTeam_1(unittest.TestCase):
                         IPAddres = '.'.join([n1,n2,n3,h])
                         result = analyze_text('IP_ADDRESS is ' + IPAddres, ['IP_ADDRESS']) #One with Context words
                         result2 = analyze_text('my Address is ' + IPAddres, ['IP_ADDRESS'])#One without context words
+                        self.assertEqual('IP_ADDRESS',result[0].entity_type)
+                        self.assertEqual('IP_ADDRESS',result2[0].entity_type)
                         print('\n',IPAddres)
                         print(result, '\n')
                         print(result2)
@@ -115,6 +117,8 @@ class TestTeam_1(unittest.TestCase):
                 IP6 = ':'.join([IP1,IP2])
                 result = analyze_text('IP_ADDRESS is ' + IP6, ['IP_ADDRESS'])#One with Context words
                 result2 = analyze_text('my Road is ' + IP6, ['IP_ADDRESS'])#One without context words
+                self.assertEqual('IP_ADDRESS',result[0].entity_type)
+                self.assertEqual('IP_ADDRESS',result2[0].entity_type)
                 print('\n',IP6)
                 print(result, '\n')
                 print(result2)
