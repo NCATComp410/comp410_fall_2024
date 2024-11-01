@@ -10,7 +10,9 @@ from presidio_analyzer.predefined_recognizers import (ItDriverLicenseRecognizer,
                                                       EsNieRecognizer,
                                                       EsNifRecognizer,
                                                       PlPeselRecognizer,
-                                                      FiPersonalIdentityCodeRecognizer, AuTfnRecognizer)
+                                                      FiPersonalIdentityCodeRecognizer,
+                                                      AuTfnRecognizer,
+                                                      AbaRoutingRecognizer)
 from presidio_anonymizer import AnonymizerEngine
 
 # make sure en_core_web_lg is loaded correctly
@@ -44,6 +46,8 @@ registry.add_recognizer(EsNifRecognizer(supported_language='en'))
 registry.add_recognizer(PlPeselRecognizer(supported_language='en'))
 registry.add_recognizer(FiPersonalIdentityCodeRecognizer(supported_language='en'))
 registry.add_recognizer(AuTfnRecognizer(supported_language='en'))
+# Add support for ABA_ROUTING_NUMBER
+registry.add_recognizer(AbaRoutingRecognizer(supported_language='en'))
 
 # Create an analyzer object
 # log_decision_process=True will log the decision process for debugging
