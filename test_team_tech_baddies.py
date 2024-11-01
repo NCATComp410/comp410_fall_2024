@@ -78,9 +78,9 @@ class TestTeam_tech_baddies(unittest.TestCase):
                 self.assertEqual(0.75, result[0].score)
 
                 # Check no context
-                result = analyze_text('My voter is ' + number, ['IN_VOTER'])
+                result = analyze_text('My number is ' + number, ['IN_VOTER'])
                 self.assertEqual('IN_VOTER', result[0].entity_type)
-                self.assertEqual(0.75, result[0].score)
+                self.assertEqual(0.4, result[0].score)
 
         # Negative Test Case
         result = analyze_text('My Voter ID is AAA00000', ['IN_VOTER'])
