@@ -61,7 +61,23 @@ class TestTeam_tech_baddies(unittest.TestCase):
 
     def test_in_vehicle_registration(self):
         """Test IN_VEHICLE_REGISTRATION functionality"""
+        # Positive test case with context
+        registration = "KA01AB1234"
+        result = analyze_text('My registration number is ' + registration, ['IN_VEHICLE_REGISTRATION'])
+        print(result)
+        self.assertEqual('IN_VEHICLE_REGISTRATION', result[0].entity_type)
+        self.assertAlmostEqual(1.0, result[0].score, places=2)
 
+        # Positive test case without context
+        result = analyze_text('My info is ' + registration, ['IN_VEHICLE_REGISTRATION'])
+        print(result)
+        self.assertEqual('IN_VEHICLE_REGISTRATION', result[0].entity_type)
+        self.assertAlmostEqual(1.0, result[0].score, places=2)
+
+        # Negative test case - invalid registration number
+        result = analyze_text('My registration number is XX00ZZ0000', ['IN_VEHICLE_REGISTRATION'])
+        print(result)
+        self.assertListEqual([], result)
     def test_in_voter(self):
         """Test IN_VOTER functionality"""
         begin = ['AAA']
