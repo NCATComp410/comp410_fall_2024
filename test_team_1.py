@@ -1,6 +1,6 @@
 """Unit test file for team 1"""
 import unittest
-from pii_scan import analyze_text, show_aggie_pride  # noqa 
+from pii_scan import analyze_text, show_aggie_pride  # noqa
 
 
 class TestTeam_1(unittest.TestCase):
@@ -37,6 +37,27 @@ class TestTeam_1(unittest.TestCase):
 
     def test_fi_personal_identity_code(self):
         """Test FI_PERSONAL_IDENTITY_CODE functionality"""
+        birthdays, centuryMarkers, genderMarkers = ['190704', '260923', '051070'], ['A', 'Y'], ['293', '522', '435', '754']
+
+        for date in birthdays:
+            for marker in centuryMarkers:
+                for num in genderMarkers:
+                    checksum = int(date + num) % 31
+                    checksum_chars = '0123456789ABCDEFHJKLMNPRSTUVWXY'
+                    controlChar = checksum_chars[checksum]
+                    hetu = ''.join([date, marker, num, controlChar])
+                    result = analyze_text('My personal identity code is ' + hetu, ['FI_PERSONAL_IDENTITY_CODE'])
+                    self.assertEqual('FI_PERSONAL_IDENTITY_CODE', result[0].entity_type)
+                    print('\n' + hetu)
+                    print(result)
+
+        #negative test case
+        incorrectHetu = '190704A293B' #Control character at the end is incorrect, should be C
+        result = analyze_text('My hetu is ' + incorrectHetu, ['FI_PERSONAL_IDENTITY_CODE'])
+        self.assertEqual([], result)
+        
+        print()
+        print(result)
 
     def test_iban_code(self):
         """Test IBAN_CODE functionality"""
@@ -68,6 +89,46 @@ class TestTeam_1(unittest.TestCase):
 
     def test_ip_address(self):
         """Test IP_ADDRESS functionality"""
+        net1s = ['168', '192', '255'] #First part of the IP Address
+        net2 = ['243']  #Second part of the IP Address
+        net3 = ['1']  #Third part of the IP Address
+        hostID = ['1', '32', '170'] #Last part of IP and the host ID
+        
+        IP61 = ['2001:0db8:85a3:','09C0:876A:130B:'] #First part of the IP
+        IP62 = ['8a2e:0370:7334','2001:0db8:85a3'] # Second part of the IP
+        
+
+        IP6 = []
+        for n1 in net1s:
+            for n2 in net2:
+                for n3 in net3:
+                    for h in hostID:
+                        IPAddres = '.'.join([n1,n2,n3,h])
+                        result = analyze_text('IP_ADDRESS is ' + IPAddres, ['IP_ADDRESS']) #One with Context words
+                        result2 = analyze_text('my Address is ' + IPAddres, ['IP_ADDRESS'])#One without context words
+                        self.assertEqual('IP_ADDRESS',result[0].entity_type)
+                        self.assertEqual('IP_ADDRESS',result2[0].entity_type)
+                        print('\n',IPAddres)
+                        print(result, '\n')
+                        print(result2)
+                        break
+        for IP1 in IP61:
+            for IP2 in IP62:
+                IP6 = ':'.join([IP1,IP2])
+                result = analyze_text('IP_ADDRESS is ' + IP6, ['IP_ADDRESS'])#One with Context words
+                result2 = analyze_text('my Road is ' + IP6, ['IP_ADDRESS'])#One without context words
+                self.assertEqual('IP_ADDRESS',result[0].entity_type)
+                self.assertEqual('IP_ADDRESS',result2[0].entity_type)
+                print('\n',IP6)
+                print(result, '\n')
+                print(result2)
+
+        #Negative test case
+        IPAddres = '192.158. 1' #fake address
+        result = analyze_text('IP Address is ' + IPAddres, ['IP_ADDRESS'])
+        self.assertListEqual([], result)
+        print('\n',result)
+
 
 
 if __name__ == '__main__':
