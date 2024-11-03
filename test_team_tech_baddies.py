@@ -91,10 +91,46 @@ class TestTeam_tech_baddies(unittest.TestCase):
 
     def test_in_vehicle_registration(self):
         """Test IN_VEHICLE_REGISTRATION functionality"""
+        # Positive test case with context
+        registration = "KA01AB1234"
+        result = analyze_text('My registration number is ' + registration, ['IN_VEHICLE_REGISTRATION'])
+        print(result)
+        self.assertEqual('IN_VEHICLE_REGISTRATION', result[0].entity_type)
+        self.assertAlmostEqual(1.0, result[0].score, places=2)
 
+        # Positive test case without context
+        result = analyze_text('My info is ' + registration, ['IN_VEHICLE_REGISTRATION'])
+        print(result)
+        self.assertEqual('IN_VEHICLE_REGISTRATION', result[0].entity_type)
+        self.assertAlmostEqual(1.0, result[0].score, places=2)
+
+        # Negative test case - invalid registration number
+        result = analyze_text('My registration number is XX00ZZ0000', ['IN_VEHICLE_REGISTRATION'])
+        print(result)
+        self.assertListEqual([], result)
     def test_in_voter(self):
         """Test IN_VOTER functionality"""
+        begin = ['AAA']
+        ending = ['0000000']
 
+        # Positive Test Case
+        for b in begin:
+            for e in ending:
+                number = ''.join([b,e])
+                # Check context score should be 0.75
+                result = analyze_text('My Voter ID is ' + number, ['IN_VOTER'])
+                print(result)
+                self.assertEqual('IN_VOTER', result[0].entity_type)
+                self.assertEqual(0.75, result[0].score)
+
+                # Check no context
+                result = analyze_text('My number is ' + number, ['IN_VOTER'])
+                self.assertEqual('IN_VOTER', result[0].entity_type)
+                self.assertEqual(0.4, result[0].score)
+
+        # Negative Test Case
+        result = analyze_text('My Voter ID is AAA00000', ['IN_VOTER'])
+        self.assertListEqual([], result)
 
 if __name__ == '__main__':
     unittest.main()
