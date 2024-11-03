@@ -93,10 +93,10 @@ class TestTeam_1(unittest.TestCase):
         net2 = ['243']  #Second part of the IP Address
         net3 = ['1']  #Third part of the IP Address
         hostID = ['1', '32', '170'] #Last part of IP and the host ID
-        
+
         IP61 = ['2001:0db8:85a3:','09C0:876A:130B:'] #First part of the IP
         IP62 = ['8a2e:0370:7334','2001:0db8:85a3'] # Second part of the IP
-        
+
 
         IP6 = []
         for n1 in net1s:

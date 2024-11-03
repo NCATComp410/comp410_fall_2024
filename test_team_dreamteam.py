@@ -62,10 +62,36 @@ class TestTeam_dreamteam(unittest.TestCase):
         # This is because the Presidio Analyzer sets the confidence score to 1.0 when validation passes
         # and removes the entity when validation fails. For AU_ABN, checksum validation is crucial to
         # ensure that only valid ABNs are detected with high confidence.
-        
 
     def test_au_acn(self):
         """Test AU_ACN functionality"""
+        # 005 499 981
+        pre = ['005']
+        mid = ['499']
+        suf = ['981']
+
+        # positive test cases
+        for p in pre:
+            for m in mid:
+                for s in suf:
+                    # check context score
+                    acn = ' '.join([p, m, s])
+                    text = 'My ACN is ' + acn
+                    print(text)
+                    result = analyze_text(text, ['AU_ACN'])
+                    print(result)
+                    self.assertEqual('AU_ACN', result[0].entity_type)
+                    self.assertEqual(1.0, result[0].score)
+
+                    # checks no context
+                    result = analyze_text('My num is ' + acn, ['AU_ACN'])
+                    self.assertEqual('AU_ACN', result[0].entity_type)
+                    # Validation score is 1.0 even if there is no context for AU_ACN
+                    self.assertEqual(1.0, result[0].score)
+
+        # negative test cases
+        result_invalid = analyze_text('My ACN is 123-456-789', ['AU_ACN'])
+        self.assertEqual([], result_invalid)
 
     def test_au_medicare(self):
         """Test AU_MEDICARE functionality"""
