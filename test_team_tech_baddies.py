@@ -80,7 +80,27 @@ class TestTeam_tech_baddies(unittest.TestCase):
         self.assertListEqual([], result)
     def test_in_voter(self):
         """Test IN_VOTER functionality"""
+        begin = ['AAA']
+        ending = ['0000000']
 
+        # Positive Test Case
+        for b in begin:
+            for e in ending:
+                number = ''.join([b,e])
+                # Check context score should be 0.75
+                result = analyze_text('My Voter ID is ' + number, ['IN_VOTER'])
+                print(result)
+                self.assertEqual('IN_VOTER', result[0].entity_type)
+                self.assertEqual(0.75, result[0].score)
+
+                # Check no context
+                result = analyze_text('My number is ' + number, ['IN_VOTER'])
+                self.assertEqual('IN_VOTER', result[0].entity_type)
+                self.assertEqual(0.4, result[0].score)
+
+        # Negative Test Case
+        result = analyze_text('My Voter ID is AAA00000', ['IN_VOTER'])
+        self.assertListEqual([], result)
 
 if __name__ == '__main__':
     unittest.main()
