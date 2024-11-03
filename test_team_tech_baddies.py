@@ -11,29 +11,60 @@ class TestTeam_tech_baddies(unittest.TestCase):
 
     def test_in_aadhaar(self):
         """Test IN_AADHAAR functionality"""
+        prefix = ['3123']
+        mid = ['4567']
+        suffix = ['8909']
+
+        # Positive test cases
+        for p in prefix:
+            for m in mid:
+                for s in suffix:
+                    aadhaar = ''.join([p, m, s])
+                    
+                    # Check with context score 
+                    result = analyze_text('My Aadhaar is ' + aadhaar, ['IN_AADHAAR'])
+                    print("Result with context:", result)
+                    
+                    if result:
+                        self.assertEqual('IN_AADHAAR', result[0].entity_type)
+                        self.assertEqual(1.0, result[0].score)
+                    else:
+                        print("No Aadhaar detected with context for:", aadhaar)
+
+                    # Check without context
+                    result = analyze_text('My abc is ' + aadhaar, ['IN_AADHAAR'])
+                    print("Result without context:", result)
+
+                    if result:
+                        self.assertEqual('IN_AADHAAR', result[0].entity_type)
+                        self.assertEqual(1.0, result[0].score)
+                    else:
+                        print("No Aadhaar detected without context for:", aadhaar)
+
+        # Negative test case (invalid Aadhaar number)
+        result = analyze_text('My Aadhaar is 000000000000', ['IN_AADHAAR'])
+        print("Negative test result:", result)
+        self.assertListEqual([], result)
 
     def test_in_pan(self):
         """Test IN_PAN functionality"""
-        #Positive test cases
-        #check context
+        # Positive test cases
+        # check context
         result = analyze_text('My IN_PAN is AAAPZ1234C', ['IN_PAN'])
         print(result)
         self.assertEqual('IN_PAN', result[0].entity_type)
         self.assertEqual(1.0, result[0].score)
 
-        #check no context
+        # check no context
         result = analyze_text('My IN_PAN is 12APZ1234C', ['IN_PAN'])
         print(result)
         self.assertEqual('IN_PAN', result[0].entity_type)
         self.assertEqual(0.4, result[0].score)
 
-        #Negative test cases
+        # Negative test cases
         result = analyze_text('My IN_PAN is 0000000000', ['IN_PAN'])
-        
-        self.assertListEqual([], result)
-        
 
-        
+        self.assertListEqual([], result)
 
     def test_in_passport(self):
         """Test IN_PASSPORT functionality"""
@@ -57,7 +88,6 @@ class TestTeam_tech_baddies(unittest.TestCase):
         # negative test case - no result found
         result = analyze_text('My passport number is A00000000',['IN_PASSPORT'])
         self.assertListEqual([], result)
-
 
     def test_in_vehicle_registration(self):
         """Test IN_VEHICLE_REGISTRATION functionality"""
