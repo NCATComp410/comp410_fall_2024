@@ -1,7 +1,7 @@
 """PII Scan"""
 import re
-import spacy
 import logging
+import spacy
 from presidio_analyzer import AnalyzerEngine, RecognizerRegistry, RecognizerResult
 from presidio_analyzer.predefined_recognizers import (ItDriverLicenseRecognizer,
                                                       ItVatCodeRecognizer,
@@ -116,7 +116,7 @@ def read_data() -> list:
     :return: list of lines from the file
     """
     # Load SECRET from .env file
-    with open('.env') as f:
+    with open('.env', encoding='utf-8') as f:
         for line in f.readlines():
             m = re.search(r'SECRET="(\w+)"', line)
             if m:
@@ -126,7 +126,8 @@ def read_data() -> list:
                 raise RuntimeError("SECRET not found in .env file")
 
     # Construct the URL from the API key
-    url = requests.get('https://drive.google.com/uc?export=download&id=1Madj8otKjwwOO353nL_' + secret)
+    url = requests.get('https://drive.google.com/uc?export=download&id=1Madj8otKjwwOO353nL_' + secret,
+                       timeout=10)
 
     # Return the data as a list of lines
     return url.text.split('\n')
