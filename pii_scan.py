@@ -72,9 +72,7 @@ def anonymize_text(text: str, entity_list: list) -> str:
            https://microsoft.github.io/presidio/supported_entities/
     """
     # Call analyzer to get results
-    results = analyzer.analyze(text=text,
-                               entities=entity_list,
-                               language='en')
+    results = analyze_text(text=text, entity_list=entity_list)
 
     # Analyzer results are passed to the AnonymizerEngine for anonymization
     anonymized_text = anonymizer.anonymize(text=text, analyzer_results=results)
@@ -87,15 +85,13 @@ def anonymize_data(data: list) -> None:
     Anonymize the text using the entity list
     :param data: the data to be anonymized
     """
-    for i in range(len(data)):
-        if data[i]:
-            if data[i].startswith('#'):
-                print(data[i])
+    for i, item in enumerate(data):
+        if item:
+            if item.startswith('#'):
+                print(item)
             else:
-                print('ID:' + str(i), end=':')
-                print('Original  :', data[i])
-                print('ID:' + str(i), end=':')
-                print('Anonymized:', anonymize_text(data[i], []))
+                print(f'ID:{i}:Original  : {item}')
+                print(f'ID:{i}:Anonymized: {anonymize_text(item, [])}')
 
 
 def analyze_text(text: str, entity_list: list, ) -> list[RecognizerResult]:
