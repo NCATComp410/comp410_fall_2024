@@ -1,6 +1,7 @@
 """PII Scan"""
-import spacy
+import re
 import logging
+import spacy
 from presidio_analyzer import AnalyzerEngine, RecognizerRegistry, RecognizerResult
 from presidio_analyzer.predefined_recognizers import (ItDriverLicenseRecognizer,
                                                       ItVatCodeRecognizer,
@@ -15,6 +16,7 @@ from presidio_analyzer.predefined_recognizers import (ItDriverLicenseRecognizer,
                                                       AbaRoutingRecognizer,
                                                       AuAcnRecognizer)
 from presidio_anonymizer import AnonymizerEngine
+import requests
 
 # make sure en_core_web_lg is loaded correctly
 # this can also be achieved with
@@ -70,9 +72,7 @@ def anonymize_text(text: str, entity_list: list) -> str:
            https://microsoft.github.io/presidio/supported_entities/
     """
     # Call analyzer to get results
-    results = analyzer.analyze(text=text,
-                               entities=entity_list,
-                               language='en')
+    results = analyze_text(text=text, entity_list=entity_list)
 
     # Analyzer results are passed to the AnonymizerEngine for anonymization
     anonymized_text = anonymizer.anonymize(text=text, analyzer_results=results)
@@ -80,14 +80,18 @@ def anonymize_text(text: str, entity_list: list) -> str:
     return anonymized_text.text
 
 
-def anonymize_file(file_path: str) -> None:
+def anonymize_data(data: list) -> None:
     """
     Anonymize the text using the entity list
-    :param file_path: the path to the file to be anonymized
+    :param data: the data to be anonymized
     """
-    with open(file_path, 'r', encoding='utf-8') as f:
-        for line in f.readlines():
-            print(anonymize_text(line, []))
+    for i, item in enumerate(data):
+        if item:
+            if item.startswith('#'):
+                print(item)
+            else:
+                print(f'ID:{i}:Original  : {item}')
+                print(f'ID:{i}:Anonymized: {anonymize_text(item, [])}')
 
 
 def analyze_text(text: str, entity_list: list, ) -> list[RecognizerResult]:
@@ -106,5 +110,29 @@ def analyze_text(text: str, entity_list: list, ) -> list[RecognizerResult]:
     return results
 
 
+def read_data() -> list:
+    """
+    Reads data from a secure file using a secret key stored in .env
+    :return: list of lines from the file
+    """
+    # Load SECRET from .env file
+    with open('.env', encoding='utf-8') as f:
+        for line in f.readlines():
+            m = re.search(r'SECRET="(\w+)"', line)
+            if m:
+                secret = m.group(1)
+                break
+            else:
+                raise RuntimeError("SECRET not found in .env file")
+
+    # Construct the URL from the API key
+    url = requests.get('https://drive.google.com/uc?export=download&id=1Madj8otKjwwOO353nL_' + secret,
+                       timeout=10)
+
+    # Return the data as a list of lines
+    return url.text.split('\n')
+
+
 if __name__ == '__main__':
     show_aggie_pride()
+    anonymize_data(read_data())
