@@ -12,6 +12,42 @@ class TestTeam_techtitans(unittest.TestCase):
     def test_url(self):
         """Test URL functionality"""
 
+    import unittest
+
+def check_url(url):
+    """Function to check if a URL contains potential PII, like a username or password."""
+    # Define a simple check for common PII indicators in a URL
+    pii_indicators = ["user=", "username=", "password="]
+    return any(indicator in url for indicator in pii_indicators)
+
+class TestURLFunctionality(unittest.TestCase):
+
+    def test_url_with_pii(self):
+        """Test case: URL containing PII parameters"""
+        test_url = "http://www.test.com/pageName?user=RealName&Password=TheRealPassword123"
+        expected = True
+        actual = check_url(test_url)
+        self.assertEqual(expected, actual, "Failed to detect PII in the URL")
+
+    def test_url_without_pii(self):
+        """Negative test case: URL without PII parameters"""
+        negative_url = "http://www.testExample.com/page?param1=val1&param2=val2"
+        expected = True
+        actual = check_url(negative_url)
+        self.assertNotEqual(expected, actual, "Incorrectly detected PII in a non-PII URL")
+
+    def test_url_only_parameters(self):
+        """Test case: URL without parameters that indicate PII"""
+        parameter_test_url = "http://www.secret.com"
+        expected = False
+        actual = check_url(parameter_test_url)
+        self.assertEqual(expected, actual, "Incorrectly detected PII in a URL with no parameters")
+
+# Run the tests
+if __name__ == "__main__":
+    unittest.main()
+
+
     def test_us_bank_number(self):
         """Test US_BANK_NUMBER functionality"""
 
