@@ -11,6 +11,22 @@ class TestTeam_techtitans(unittest.TestCase):
 
     def test_url(self):
         """Test URL functionality"""
+                test_url = "http://www.test.com/pageName?user=RealName&Password=TheRealPassword123"
+        expected = True
+        actual = check_url(test_url)
+        self.assertEqual(expected, actual)
+
+        #Negative test case, doesn't have PII in URL
+        negative_url = "http://www.testExample.com/page?param1=val1&param2=val2"
+        expected = True
+        actual = check_url(negative_url)
+        self.assertNotEqual(expected, actual)
+
+        #Test Case to make sure only parameters are included
+        parameter_test_url = "http://www.secret.com"
+        expected = False
+        actual= check_url (parameter_test_url)
+        self.assertEqual(expected, actual)
 
     def test_us_bank_number(self):
         """Test US_BANK_NUMBER functionality"""
